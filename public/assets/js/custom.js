@@ -31,15 +31,28 @@ $(document).ready(function(){
                 url: form.action,
                 type: form.method,
                 data: $(form).serialize(),
+                beforeSend: function(){
+                    $("#loader").html('Please wait...');
+                    $("#submitbtn").hide();
+                },
                 success: function(response) {
+                    $("#loader").html('Please wait...');
+                    $("#submitbtn").hide();
                     if(response.status==201){
                         toastr.success(response.message);
+                        setTimeout(function() {
+                            window.location.reload();
+                        }, 1000);
                     } else if(response.status==422){
                         toastr.error(response.message);
                     } else {
                         toastr.error(response.message);
                     }
-                }            
+                },
+                complete:function(){
+                    $("#submitbtn").show();
+                    $("#loader").html('');
+                }           
             });
         }
     });

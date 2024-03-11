@@ -21,7 +21,8 @@
                             </div>
 
                             <div class="d-grid mx-auto">
-                                <button type="submit" class="btn btn-dark btn-block">Sign Up</button>
+                                <span id="loader" class="text-center"></span>
+                                <button type="submit" class="btn btn-dark btn-block" id="submitbtn">Sign Up</button>
                             </div>
                         </form>
                     </div>
