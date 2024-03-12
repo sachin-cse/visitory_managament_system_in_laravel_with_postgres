@@ -31,6 +31,8 @@ Route::get('/', function () {
 
 Route::group(['prefix'=>'admin','as'=>'admin.'], function(){
     Route::post('/register/save', [CustomAuthController::class, 'registration'])->name('register');
+    Route::get('/login', [CustomAuthController::class, 'login'])->name('login');
+    Route::post('/login/save', [CustomAuthController::class, 'loginUser'])->name('loginUser');
 });
 
 require __DIR__.'/auth.php';

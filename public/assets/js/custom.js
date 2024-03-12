@@ -56,4 +56,55 @@ $(document).ready(function(){
             });
         }
     });
+
+    // login user
+    $('#loginUser').validate({
+        rules:{
+            email:{
+                required:true,
+                email:true,
+            },
+            password:{
+                required:true,
+            }
+        },
+        messages:{
+            email:{
+                required:"This field is required",
+                email:"Please enter a valid email address"
+            },
+            password:{
+                required:"This field is required",
+            }
+        },
+        submitHandler: function(form) {
+            $.ajax({
+                url: form.action,
+                type: form.method,
+                data: $(form).serialize(),
+                beforeSend: function(){
+                    $("#loader-login").html('Please wait...');
+                    $("#submitbtn-login").hide();
+                },
+                success: function(response) {
+                    $("#loader-login").html('Please wait...');
+                    $("#submitbtn-login").hide();
+                    if(response.status==200){
+                        toastr.success(response.message);
+                        setTimeout(function() {
+                            window.location.reload();
+                        }, 1000);
+                    } else if(response.status==401){
+                        toastr.error(response.message);
+                    } else {
+                        toastr.error(response.message);
+                    }
+                },
+                complete:function(){
+                    $("#loader-login").html('');
+                    $("#submitbtn-login").show();
+                }           
+            });
+        }
+    });
 });

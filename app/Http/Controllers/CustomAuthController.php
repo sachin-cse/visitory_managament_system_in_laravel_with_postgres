@@ -5,8 +5,9 @@ namespace App\Http\Controllers;
 use Hash;
 use Session;
 
-use App\Models\User;
+use Exception;
 
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Database\QueryException;
@@ -60,5 +61,55 @@ class CustomAuthController extends Controller
     }
 
 
+    }
+
+    // login view
+    public function login(){
+        return view('auth.login');
+    }
+
+    // loginUser
+    public function loginUser(Request $request){
+
+        $rules = [
+            'email' => 'required|email',
+            'password' => 'required',
+        ];
+
+        $validator = Validator::make($request->all(), $rules, [
+            'email.required' => 'email field is required',
+            'email.email' => 'please enter a valid email',
+            'password.required' => 'password field is required'
+        ]);
+
+        if($validator->fails()){
+            return response()->json([
+                'status' => 422,
+                'message' => $validator->errors()->first()
+            ]);
+        }
+
+        $credentials = $request->only('email', 'password');
+
+
+        try{
+            if(Auth::attempt($credentials)){
+                return response()->json([
+                    'status' => 200,
+                    'message' => 'User logged in successfully'
+                ]);
+            } else {
+                return response()->json([
+                    'status' => 401,
+                    'message' => 'Invalid credentials'
+                ]);
+            }
+        }
+        catch (Exception $e){
+            return response()->json([
+                'status' => 500,
+                'message' => $e->getMessage()
+            ]);
+        }
     }
 }

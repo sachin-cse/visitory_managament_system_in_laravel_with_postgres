@@ -24,6 +24,7 @@
                                 <span id="loader" class="text-center"></span>
                                 <button type="submit" class="btn btn-dark btn-block" id="submitbtn">Sign Up</button>
                             </div>
+                            <span>if you have an account please ? <a href="{{route('admin.login')}}">login</a></span>
                         </form>
                     </div>
                 </div>
