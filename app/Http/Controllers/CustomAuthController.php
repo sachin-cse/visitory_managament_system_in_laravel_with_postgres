@@ -7,11 +7,16 @@ use Session;
 
 use Exception;
 
+use Carbon\Carbon;
 use App\Models\User;
+use App\Mail\BacancyMail;
+use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Database\QueryException;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 
 class CustomAuthController extends Controller
 {
@@ -112,4 +117,98 @@ class CustomAuthController extends Controller
             ]);
         }
     }
+
+    // reset password view
+    public function ShowResetPasswordView(Request $request){
+        return view('auth.reset-password');
+    }
+
+    // 
+    public function SendResetLink(Request $request){
+        $email = $request->email;
+        $token = Str::random(60);
+
+        $body = [
+            'email' => $email,
+            'token' => $token
+        ];
+
+        try{
+
+            $user = User::where('email', $email)->firstOrFail();
+            $user->reset_password_token = $token;
+            $user->token_expiry_at = Carbon::now()->addMinutes(5);
+            $user->save();
+            
+            if(Mail::to($email)->send(new BacancyMail($body))){
+                return response()->json([
+                    'status' => 200,
+                    'message' => 'reset password link sent successfully in your registered email address'
+                ]);
+            } else {
+                return response()->json([
+                    'status' => 401,
+                    'message' => 'Failed to send reset password link. Please try again later.'
+                ]);
+            }
+        }
+        catch(ModelNotFoundException $e){
+            return response()->json([
+                'status' => 404,
+                'message' => 'Please provide registered email address',
+            ]);
+       }
+       catch(Exception $e){
+        return response()->json([
+            'status' => 500,
+            'message' => $e->getMessage(),
+        ]);
+       }
+}
+
+// change password view
+public function ChangePasswordView(Request $request, $token){
+    return view('auth.change-password', ['token' => $token]);
+}
+
+// change password
+public function ChangePassword(Request $request){
+    $token = $request->reset_password_token;
+    $new_password = $request->new_password;
+
+    try{
+
+        $token_expiry_at = User::select('token_expiry_at')->where('reset_password_token', '=', $token)->first();
+        // dd($token_expiry_at);
+        $current_time = date('H:i:s', time());
+        if($current_time > $token_expiry_at->token_expiry_at){
+            return response()->json([
+                'status' => 401,
+                'message' => 'Token has expired please try again',
+            ]);
+        } else {
+            User::where('reset_password_token', '=', $token)->update([
+                'password' => Hash::make($request->new_password)
+            ]);
+            return response()->json([
+                'status' => 200,
+                'message' => 'Password updated successfully',
+            ]);
+        }
+    }
+    catch(ModelNotFoundException $e){
+        return response()->json([
+            'status' => 404,
+            'message' => $e->getMessage(),
+        ]);
+   }
+   catch(Exception $e){
+    return response()->json([
+        'status' => 500,
+        'message' => $e->getMessage(),
+    ]);
+   }
+
+}
+
 }

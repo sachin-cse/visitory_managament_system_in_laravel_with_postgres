@@ -21,6 +21,7 @@
                                 <span id="loader-login" class="text-center"></span>
                                 <button type="submit" class="btn btn-dark btn-block" id="submitbtn-login">Sign in</button>
                             </div>
+                            <a href="{{route('admin.reset-password')}}">Forgot Password ? </a>
                         </form>
                     </div>
                 </div>
