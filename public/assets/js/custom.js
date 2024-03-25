@@ -62,7 +62,6 @@ $(document).ready(function(){
         rules:{
             email:{
                 required:true,
-                email:true,
             },
             password:{
                 required:true,
@@ -70,8 +69,7 @@ $(document).ready(function(){
         },
         messages:{
             email:{
-                required:"This field is required",
-                email:"Please enter a valid email address"
+                required:"This field is required"
             },
             password:{
                 required:"This field is required",

@@ -14,6 +14,9 @@
                                 <input type="text" name="name" class="form-control" placeholder="enter your name">
                             </div>
                             <div class="form-group mb-3">
+                                <input type="text" name="username" class="form-control" placeholder="enter your username">
+                            </div>
+                            <div class="form-group mb-3">
                                 <input type="email" name="email" class="form-control" placeholder="enter your email">
                             </div>
                             <div class="form-group mb-3">

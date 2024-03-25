@@ -12,6 +12,7 @@ use App\Models\User;
 use App\Mail\BacancyMail;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Database\QueryException;
@@ -48,6 +49,7 @@ class CustomAuthController extends Controller
         $saveUser = new User;
 
         $saveUser->name = $request->name;
+        $saveUser->username = $request->username;
         $saveUser->email = $request->email;
         $saveUser->password = $request->password;
 
@@ -77,13 +79,12 @@ class CustomAuthController extends Controller
     public function loginUser(Request $request){
 
         $rules = [
-            'email' => 'required|email',
+            'email' => 'required',
             'password' => 'required',
         ];
 
         $validator = Validator::make($request->all(), $rules, [
             'email.required' => 'email field is required',
-            'email.email' => 'please enter a valid email',
             'password.required' => 'password field is required'
         ]);
 
@@ -94,11 +95,20 @@ class CustomAuthController extends Controller
             ]);
         }
 
-        $credentials = $request->only('email', 'password');
+        $EmailorUsername = $request->get('email');
+
+        if(filter_var($EmailorUsername, FILTER_VALIDATE_EMAIL)){
+            $credential = User::where('email', $EmailorUsername)->first();
+        } else {
+            // DB::enableQueryLog();
+            $credential = User::where('username', $EmailorUsername)->first();
+            // $query = DB::getQueryLog();
+            // dd($query);
+        }
 
 
         try{
-            if(Auth::attempt($credentials)){
+            if($credential && Hash::check($request->get('password'), $credential->password)){
                 return response()->json([
                     'status' => 200,
                     'message' => 'User logged in successfully'
@@ -110,12 +120,18 @@ class CustomAuthController extends Controller
                 ]);
             }
         }
-        catch (Exception $e){
+        catch(ModelNotFoundException $e){
             return response()->json([
-                'status' => 500,
+                'status' => 404,
                 'message' => $e->getMessage()
             ]);
         }
+        // catch (Exception $e){
+        //     return response()->json([
+        //         'status' => 500,
+        //         'message' => $e->getMessage()
+        //     ]);
+        // }
     }
 
     // reset password view
