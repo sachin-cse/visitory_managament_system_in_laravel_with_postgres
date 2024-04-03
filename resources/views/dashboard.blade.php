@@ -34,5 +34,6 @@
     <script src="{{asset('assets/js/toastr.min.js')}}"></script>
     <script src="{{asset('assets/js/jquery.validate.min.js')}}"></script>
     <script src="{{asset('assets/js/custom.js')}}"></script>
+    @stack('scripts')
 </body>
 </html>

@@ -13,6 +13,7 @@ use App\Mail\BacancyMail;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\URL;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Database\QueryException;
@@ -77,7 +78,7 @@ class CustomAuthController extends Controller
 
     // loginUser
     public function loginUser(Request $request){
-
+        // dd($request->all());
         $rules = [
             'email' => 'required',
             'password' => 'required',
@@ -95,20 +96,13 @@ class CustomAuthController extends Controller
             ]);
         }
 
-        $EmailorUsername = $request->get('email');
+            $EmailorUsername = $request->get('email');
 
-        if(filter_var($EmailorUsername, FILTER_VALIDATE_EMAIL)){
-            $credential = User::where('email', $EmailorUsername)->first();
-        } else {
-            // DB::enableQueryLog();
-            $credential = User::where('username', $EmailorUsername)->first();
-            // $query = DB::getQueryLog();
-            // dd($query);
-        }
+            $credential = User::where('email', $EmailorUsername)->orWhere('username', $EmailorUsername)->first();
 
 
         try{
-            if($credential && Hash::check($request->get('password'), $credential->password)){
+            if($credential && Hash::check($request->get('password'), $credential->password) && Auth::loginUsingId($credential->id)){
                 return response()->json([
                     'status' => 200,
                     'message' => 'User logged in successfully'
@@ -126,12 +120,25 @@ class CustomAuthController extends Controller
                 'message' => $e->getMessage()
             ]);
         }
-        // catch (Exception $e){
-        //     return response()->json([
-        //         'status' => 500,
-        //         'message' => $e->getMessage()
-        //     ]);
-        // }
+    }
+
+    // logout user
+
+    public function logoutUser(Request $request){
+        try{
+            Auth::logout();
+                return response()->json([
+                    'status' => 200,
+                    'message' => 'User logout successfully'
+                ]);
+            
+        }
+        catch(Exception $e){
+            return response()->json([
+                'status' => 500,
+                'message' => $e->getMessage()
+            ]);
+        }
     }
 
     // reset password view

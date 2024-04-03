@@ -30,3 +30,12 @@
     </div>
 </main>
 @endsection
+
+@push('scripts')
+    @if(\Session::has('message'))
+    <script>
+        toastr.error('{{\Session::get('message')}}');
+    </script>
+    @endif
+@endpush
+

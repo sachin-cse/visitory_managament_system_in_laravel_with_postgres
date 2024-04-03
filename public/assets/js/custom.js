@@ -1,6 +1,9 @@
 $(document).ready(function(){
     // register user
 
+    var base_url = window.location.origin;
+    // alert(base_url);
+
     $('#registerUser').validate({
         rules:{
             name:"required",
@@ -85,12 +88,13 @@ $(document).ready(function(){
                     $("#submitbtn-login").hide();
                 },
                 success: function(response) {
+                    // alert(JSON.stringify(response));
                     $("#loader-login").html('Please wait...');
                     $("#submitbtn-login").hide();
                     if(response.status==200){
                         toastr.success(response.message);
                         setTimeout(function() {
-                            window.location.reload();
+                            window.location.href = base_url + '/admin/dashboard';
                         }, 1000);
                     } else if(response.status==401){
                         toastr.error(response.message);
@@ -104,6 +108,31 @@ $(document).ready(function(){
                 }           
             });
         }
+    });
+
+    // logout user
+    $('#logoutUser').on('submit', function(e){   
+        e.preventDefault();
+        var form = $(this);
+        $.ajax({
+            url: form.attr('action'),
+            type: form.attr('method'),
+            headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
+            success: function(response){
+                // alert(JSON.stringify(response));
+                if(response.status == 200){
+                    toastr.success(response.message);
+                    setTimeout(function() {
+                        window.location.href = base_url + '/admin/login';
+                    }, 2000);
+                } else {
+                    toastr.error(response.message);
+                }
+            },
+            error: function(xhr, textStatus, errorThrown) {
+                toastr.error('Error: ' + errorThrown);
+            }
+        });
     });
 
     // send reset link
