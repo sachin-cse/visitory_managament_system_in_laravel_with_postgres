@@ -5,6 +5,10 @@
     </div>
     <div class="relative">
         @auth
+            <a href="{{route('admin.clear-cache', ['command_type' => 'clear-cache'])}}" class="bg-gray-600 text-white text-sm uppercase py-2 px-4 flex items-center rounded">
+                <span class="ml-2 text-xs font-semibold">Back</span>
+            </a>
+      
             <div class="flex items-center cursor-pointer" id="opennavdropdown">
                 {{-- <img class="w-8 h-8 rounded-full mr-2" src="" alt="Avatar"> --}}
                 <p class="text-sm text-white font-semibold leading-none">{{ auth()->user()->name }}</p>
@@ -31,4 +35,11 @@
 
     </div>
 </div>
+@push('scripts')
+@if(\Session::has('success'))
+    <script>
+        toastr.success('{{\Session::get('success')}}');
+    </script>
+@endif
+@endpush
 <!-- Log on to codeastro.com for more projects -->

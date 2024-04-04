@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\BaseController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\CustomAuthController;
@@ -22,6 +23,7 @@ Route::get('/', function () {
 
 Route::group(['prefix'=>'admin','as'=>'admin.', 'middleware' => ['custom_auth']], function(){
     Route::get('/dashboard', [DashboardController::class, 'AdminDashboard'])->name('dashboard');
+    Route::get('/{command_type}', [BaseController::class, 'ClearCache'])->name('clear-cache');
     route::get('/profile/{request_type}', [ProfileController::class, 'handleMyprofileRequest'])->name('handle_my_profile_request');
 });
 
