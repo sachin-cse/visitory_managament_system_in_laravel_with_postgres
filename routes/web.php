@@ -23,9 +23,13 @@ Route::get('/', function () {
 
 Route::group(['prefix'=>'admin','as'=>'admin.', 'middleware' => ['custom_auth']], function(){
     Route::get('/dashboard', [DashboardController::class, 'AdminDashboard'])->name('dashboard');
-    Route::get('/{command_type}', [BaseController::class, 'ClearCache'])->name('clear-cache');
     route::get('/profile/{request_type}', [ProfileController::class, 'handleMyprofileRequest'])->name('handle_my_profile_request');
+    route::post('/profile/{request_type}', [ProfileController::class, 'handleMyprofileRequest'])->name('handle_my_profile_request');
 });
+
+Route::get('/{command_type}', [BaseController::class, 'ClearCache'])->name('admin.clear-cache')->middleware('custom_auth');
+
+
 
 
 Route::group(['prefix'=>'admin','as'=>'admin.'], function(){

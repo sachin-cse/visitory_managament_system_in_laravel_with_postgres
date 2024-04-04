@@ -12,6 +12,8 @@ class BaseController extends Controller
             \Session::flash('success', 'cache cleared successfully'); 
             \Artisan::call('cache:clear');
             return redirect()->back();
+        } else {
+            abort('404');
         }
     }
 }

@@ -19,6 +19,8 @@ class ProfileController extends Controller
         if($request_type == 'edit'){
             $userDetails = Auth::user();
             return view('profile.edit', compact('userDetails'));
+        } elseif($request_type == 'update'){
+            dd($request->all());
         }
     }
 

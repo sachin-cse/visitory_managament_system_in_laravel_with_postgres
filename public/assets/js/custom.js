@@ -226,4 +226,71 @@ $(document).ready(function(){
             });
         }
     });
+
+    // update profile
+    $.validator.addMethod('filesize', function (value, element, param) {
+        return this.optional(element) || (element.files[0].size <= param)
+    }, 'File size must be less than {0} kb');
+
+    $('#update-profile').validate({
+        rules:{
+            name:{
+                required:true,
+                lettersonly: true
+            },
+            username:{
+                required:true,
+            },
+            profile_picture:{
+                required:true,
+                extension: "jpg|jpeg|png",
+                filesize: 200000
+            }
+        },
+        messages:{
+            name:{
+                required:"Name field is required",
+                lettersonly: "Only letters are allowed",
+            },
+            username:{
+                required:"Username field is required",
+            },
+            profile_picture:{
+                required:"Profile picture is required field",
+                extension: "allowed file extension only jpg, jpeg and png format",
+            }
+        },
+        submitHandler: function(form) {
+            var formData = new FormData(form);
+            $.ajax({
+                url: form.action,
+                type: form.method,
+                contentType: 'multipart/form-data',
+                cache: false,
+                contentType: false,
+                processData: false,
+                data: formData,
+                beforeSend: function(){
+                    $("#loader").html('Please wait...');
+                    $("#hide-btn").hide();
+                },
+                success: function(response) {
+                    // alert(JSON.stringify(response));
+                    $("#loader").html('Please wait...');
+                    $("#hide-btn").hide();
+                    if(response.status==200){
+                        toastr.success(response.message);
+                    } else if(response.status==401){
+                        toastr.error(response.message);
+                    } else {
+                        toastr.error(response.message);
+                    }
+                },
+                complete:function(){
+                    $("#loader").html('');
+                    $("#hide-btn").show();
+                }           
+            });
+        }
+    });
 });

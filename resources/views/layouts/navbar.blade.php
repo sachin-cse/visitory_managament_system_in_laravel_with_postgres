@@ -6,7 +6,7 @@
     <div class="relative">
         @auth
             <a href="{{route('admin.clear-cache', ['command_type' => 'clear-cache'])}}" class="bg-gray-600 text-white text-sm uppercase py-2 px-4 flex items-center rounded">
-                <span class="ml-2 text-xs font-semibold">Back</span>
+                <span class="ml-2 text-xs font-semibold">Clear Cache</span>
             </a>
       
             <div class="flex items-center cursor-pointer" id="opennavdropdown">

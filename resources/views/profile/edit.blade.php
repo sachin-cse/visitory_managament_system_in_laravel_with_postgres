@@ -16,9 +16,8 @@
         </div>
         <!-- Log on to codeastro.com for more projects -->
         <div class="mt-8 bg-white rounded">
-            <form action="javascript:void(0);" method="POST" class="w-full max-w-2xl mx-auto px-6 py-12 flex flex-wrap justify-between" enctype="multipart/form-data">
+            <form action="{{route('admin.handle_my_profile_request', 'update')}}" method="POST" class="w-full max-w-2xl mx-auto px-6 py-12 flex flex-wrap justify-between" enctype="multipart/form-data" id="update-profile">
                 @csrf
-                @method('PUT')
                 <div class="w-full sm:w-auto order-last sm:order-first">
                     <div class="md:flex md:items-center mb-4">
                         <div class="md:w-1/3">
@@ -65,7 +64,8 @@
                     <div class="md:flex md:items-center">
                         <div class="md:w-1/3"></div>
                         <div class="md:w-2/3">
-                            <button class="w-full shadow bg-blue-500 hover:bg-blue-400 focus:shadow-outline focus:outline-none text-white font-bold py-2 px-4 rounded" type="submit">
+                            <span id="loader" class="text-center"></span>
+                            <button class="w-full shadow bg-blue-500 hover:bg-blue-400 focus:shadow-outline focus:outline-none text-white font-bold py-2 px-4 rounded" id="hide-btn" type="submit">
                                 Submit Changes
                             </button>
                         </div>
