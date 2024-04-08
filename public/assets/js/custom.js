@@ -236,21 +236,18 @@ $(document).ready(function(){
         rules:{
             name:{
                 required:true,
-                lettersonly: true
             },
             username:{
                 required:true,
             },
             profile_picture:{
                 required:true,
-                extension: "jpg|jpeg|png",
                 filesize: 200000
             }
         },
         messages:{
             name:{
                 required:"Name field is required",
-                lettersonly: "Only letters are allowed",
             },
             username:{
                 required:"Username field is required",
@@ -280,7 +277,7 @@ $(document).ready(function(){
                     $("#hide-btn").hide();
                     if(response.status==200){
                         toastr.success(response.message);
-                    } else if(response.status==401){
+                    } else if(response.status==500){
                         toastr.error(response.message);
                     } else {
                         toastr.error(response.message);
@@ -293,4 +290,16 @@ $(document).ready(function(){
             });
         }
     });
+
 });
+
+    // preview image
+function previewImage(id, input){
+    if (input.files && input.files[0]) {
+        var reader = new FileReader();
+        reader.onload = function (e) {
+            $('#' + id).attr('src', e.target.result);
+        }
+        reader.readAsDataURL(input.files[0]);
+    }
+}

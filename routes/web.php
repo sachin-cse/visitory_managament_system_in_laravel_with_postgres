@@ -29,9 +29,6 @@ Route::group(['prefix'=>'admin','as'=>'admin.', 'middleware' => ['custom_auth']]
 
 Route::get('/{command_type}', [BaseController::class, 'ClearCache'])->name('admin.clear-cache')->middleware('custom_auth');
 
-
-
-
 Route::group(['prefix'=>'admin','as'=>'admin.'], function(){
     Route::post('/register/save', [CustomAuthController::class, 'registration'])->name('register')->middleware('custom_guest');
     Route::get('/login', [CustomAuthController::class, 'login'])->name('login')->middleware('custom_guest');

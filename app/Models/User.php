@@ -25,7 +25,8 @@ class User extends Authenticatable
         'type',
         'reset_password_token',
         'token_expiry_at',
-        'username'
+        'username',
+        'profile_image',
     ];
 
     /**
