@@ -44,7 +44,7 @@ $(document).ready(function(){
                     if(response.status==201){
                         toastr.success(response.message);
                         setTimeout(function() {
-                            window.location.reload();
+                            window.location.href = base_url+'/admin/login';
                         }, 1000);
                     } else if(response.status==422){
                         toastr.error(response.message);
@@ -241,7 +241,6 @@ $(document).ready(function(){
                 required:true,
             },
             profile_picture:{
-                required:true,
                 filesize: 200000
             }
         },
@@ -253,7 +252,6 @@ $(document).ready(function(){
                 required:"Username field is required",
             },
             profile_picture:{
-                required:"Profile picture is required field",
                 extension: "allowed file extension only jpg, jpeg and png format",
             }
         },
@@ -277,6 +275,9 @@ $(document).ready(function(){
                     $("#hide-btn").hide();
                     if(response.status==200){
                         toastr.success(response.message);
+                        setTimeout(function(){
+                            window.location.reload();
+                        },1000)
                     } else if(response.status==500){
                         toastr.error(response.message);
                     } else {

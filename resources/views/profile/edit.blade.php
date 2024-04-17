@@ -58,7 +58,8 @@
                             </label>
                         </div>
                         <div class="md:w-2/3">
-                            <img src="" id="profile_pic" height="50" width="50">
+                            <img src="{{!empty(\Auth::user()->profile_image) ? asset('assets/user/profile/'. \Auth::user()->profile_image):asset('assets/user/profile/no_image.jpg')}}" id="profile_pic" height="50" width="50">
+                            <input type="hidden" value="{{\Auth::user()->profile_image}}" name="hidden_image">
                             <input name="profile_picture" class="bg-gray-200 appearance-none border-2 border-gray-200 rounded w-full py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-blue-500" type="file" onchange="previewImage('profile_pic', this)">
                         </div>
                     </div>

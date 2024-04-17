@@ -29,7 +29,7 @@ class ProfileController extends Controller
             $rules = [
                 'username' => 'required|regex:/^[a-zA-Z0-9@ ]+$/|max:30',
                 'name' => 'required|max:30',
-                'profile_picture' => 'required|mimes:jpeg,png,jpg|max:200',
+                'profile_picture' => 'sometimes|required|mimes:jpeg,png,jpg|max:200',
             ];
 
             $validator = Validator::make($request->all(), $rules, [
@@ -57,16 +57,22 @@ class ProfileController extends Controller
             }
 
 
-            if($request->hasFile('profile_picture')){
+            if($request->hasFile('profile_picture') && $request->hasFile('hidden_image')){
                 $file = $request->file('profile_picture');
+                $image_name = pathinfo($request->profile_picture->getClientOriginalName(), PATHINFO_FILENAME);
                 $extenstion = $file->getClientOriginalExtension();
-                $filename = time().'.'.$extenstion;
+                $filename = $image_name.'.'.$extenstion;
+                if(file_exists(public_path($folder.'/'.$filename))){
+                    unlink(public_path($folder.'/'.$filename));
+                }
                 $file->move($folder, $filename);
+            } else {
+                $filename = $request->hidden_image;
             }
 
             try{
 
-                $updateProfile = User::where('id', Auth::user()->id)->update(['name' => $request->name, 'username' => $request->username, 'profile_image' => $filename]);
+                $updateProfile = User::where('id', Auth::user()->id)->update(['name' => $request->name, 'username' => $request->username, 'profile_image' => $filename, 'updated_by' => \Auth::user()->id]);
                 if($updateProfile){
                     return response()->json([
                         'status' => 200,

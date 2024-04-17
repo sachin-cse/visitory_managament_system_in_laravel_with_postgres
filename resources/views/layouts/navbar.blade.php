@@ -10,7 +10,7 @@
             </a>
       
             <div class="flex items-center cursor-pointer" id="opennavdropdown">
-                {{-- <img class="w-8 h-8 rounded-full mr-2" src="" alt="Avatar"> --}}
+                <img class="w-8 h-8 rounded-full mr-2" src="{{!empty(\Auth::user()->profile_image) ? asset('assets/user/profile/'. \Auth::user()->profile_image):asset('assets/user/profile/no_image.jpg')}}" alt="Avatar">
                 <p class="text-sm text-white font-semibold leading-none">{{ auth()->user()->name }}</p>
                 <svg class="w-4 h-4 stroke-current text-gray-200 ml-1 feather feather-chevron-down" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="6 9 12 15 18 9"></polyline></svg>
             </div>
