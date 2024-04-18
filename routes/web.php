@@ -17,6 +17,10 @@ use App\Http\Controllers\CustomAuthController;
 |
 */
 
+require __DIR__.'/teacher.php';
+require __DIR__.'/auth.php';
+
+
 Route::get('/', function () {
     return view('auth.register');
 });
@@ -41,4 +45,3 @@ Route::group(['prefix'=>'admin','as'=>'admin.'], function(){
 });
 
 
-require __DIR__.'/auth.php';
