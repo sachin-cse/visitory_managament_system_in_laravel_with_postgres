@@ -57,7 +57,7 @@ class ProfileController extends Controller
             }
 
 
-            if($request->hasFile('profile_picture') && $request->hasFile('hidden_image')){
+            if($request->hasFile('profile_picture')){
                 $file = $request->file('profile_picture');
                 $image_name = pathinfo($request->profile_picture->getClientOriginalName(), PATHINFO_FILENAME);
                 $extenstion = $file->getClientOriginalExtension();
@@ -72,7 +72,7 @@ class ProfileController extends Controller
 
             try{
 
-                $updateProfile = User::where('id', Auth::user()->id)->update(['name' => $request->name, 'username' => $request->username, 'profile_image' => $filename, 'updated_by' => \Auth::user()->id]);
+                $updateProfile = User::where('id', Auth::user()->id)->update(['name' => $request->name, 'username' => $request->username, 'profile_image' => $filename]);
                 if($updateProfile){
                     return response()->json([
                         'status' => 200,

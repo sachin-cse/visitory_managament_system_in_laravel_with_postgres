@@ -39,8 +39,7 @@ class User extends Authenticatable
         'token_expiry_at',
         'username',
         'profile_image',
-        'created_by',
-        'updated_by',
+        'deleted_at',
     ];
 
     /**

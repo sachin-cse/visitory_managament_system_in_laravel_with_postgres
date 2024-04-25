@@ -22,4 +22,11 @@ class TeacherController extends Controller
         }
     }
 
+    // handle teacher action type
+    public function handleTeacherActionType(Request $request, $action_type){
+        if($request->ajax() && $request->method() == 'POST'){
+            $data = $request->all();
+        }
+    }
+
 }
