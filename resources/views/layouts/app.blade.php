@@ -9,7 +9,9 @@
     <title>{{ config('app.name', 'Laravel') }}</title>
 
     <link href="{{ asset('assets/css/app.css') }}" rel="stylesheet">
+    <link href="{{ asset('assets/css/jquery-ui.min.css') }}" rel="stylesheet">
     <script src="{{asset('assets/js/jquery.min.js')}}"></script>
+    <script src="{{asset('assets/js/bootstrap.js')}}"></script>
     <link rel="stylesheet" href={{asset('assets/css/toastr.min.css')}}>
     
 </head>

@@ -292,19 +292,6 @@ $(document).ready(function(){
         }
     });
 
-    // teacher add edit  profile view
-    $('.action_type').on('click', function(){
-        var url = $(this).data('url');
-        $.ajax({
-            url:url,
-            type: 'POST',
-            headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
-            success:function(response){
-                console.log(response);
-            }
-        });
-    });
-
 });
 
     // preview image

@@ -2,8 +2,9 @@
 
 namespace App\Http\Controllers\Teacher;
 
-use App\Http\Controllers\Controller;
+use App\Models\TeacherModel;
 use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
 
 class TeacherController extends Controller
 {
@@ -24,9 +25,10 @@ class TeacherController extends Controller
 
     // handle teacher action type
     public function handleTeacherActionType(Request $request, $action_type){
-        if($request->ajax() && $request->method() == 'POST'){
-            $data = $request->all();
+            $post_data = $request->all();
+            if($action_type == 'add' || $action_type == 'edit'){
+                $data = TeacherModel::find($post_data['id']??'');
+                return view('teacher.add_edit_form', ['data' => $data??'']);
+            }
         }
     }
-
-}
