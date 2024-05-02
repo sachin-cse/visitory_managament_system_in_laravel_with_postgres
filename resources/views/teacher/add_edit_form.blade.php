@@ -17,6 +17,7 @@
         <!-- Log on to codeastro.com for more projects -->
         <div class="table w-full mt-8 bg-white rounded">
             <form action="javascript:void(0);" method="POST" class="w-full max-w-xl px-6 py-12" enctype="multipart/form-data">
+                @csrf
                 <input type="hidden" value="save_data" name="mode">
                 @csrf
                 <div class="md:flex md:items-center mb-6">
@@ -27,35 +28,6 @@
                     </div>
                     <div class="md:w-2/3">
                         <input name="name" class="bg-gray-200 appearance-none border-2 border-gray-200 rounded w-full py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-blue-500" type="text" value="{{ old('name') }}">
-                        @error('name')
-                            <p class="text-red-500 text-xs italic">{{ $message }}</p>
-                        @enderror
-                    </div>
-                </div>
-                <div class="md:flex md:items-center mb-6">
-                    <div class="md:w-1/3">
-                        <label class="block text-gray-500 font-bold md:text-right mb-1 md:mb-0 pr-4">
-                            Email
-                        </label>
-                    </div>
-                    <div class="md:w-2/3">
-                        <input name="email" class="bg-gray-200 appearance-none border-2 border-gray-200 rounded w-full py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-blue-500" type="email" value="{{ old('email') }}">
-                        @error('email')
-                            <p class="text-red-500 text-xs italic">{{ $message }}</p>
-                        @enderror
-                    </div>
-                </div>
-                <div class="md:flex md:items-center mb-6">
-                    <div class="md:w-1/3">
-                        <label class="block text-gray-500 font-bold md:text-right mb-1 md:mb-0 pr-4">
-                            Password
-                        </label>
-                    </div>
-                    <div class="md:w-2/3">
-                        <input name="password" class="bg-gray-200 appearance-none border-2 border-gray-200 rounded w-full py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-blue-500" type="password">
-                        @error('password')
-                            <p class="text-red-500 text-xs italic">{{ $message }}</p>
-                        @enderror
                     </div>
                 </div>
                 <div class="md:flex md:items-center mb-6">
@@ -66,13 +38,11 @@
                     </div>
                     <div class="md:w-2/3">
                         <input name="phone" class="bg-gray-200 appearance-none border-2 border-gray-200 rounded w-full py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-blue-500" type="text" value="{{ old('phone') }}">
-                        @error('phone')
-                            <p class="text-red-500 text-xs italic">{{ $message }}</p>
-                        @enderror
                     </div>
                 </div>
                 <!-- Log on to codeastro.com for more projects -->
                 <div class="md:flex md:items-center mb-6">
+                    
                     <div class="md:w-1/3">
                         <label class="block text-gray-500 font-bold md:text-right mb-1 md:mb-0 pr-4">
                             Gender
@@ -93,11 +63,32 @@
                                 <span class="text-sm">Other</span>
                             </label>
                         </div>
-                        @error('gender')
-                            <p class="text-red-500 text-xs italic">{{ $message }}</p>
-                        @enderror
                     </div>
+
                 </div>
+
+                <div class="md:flex md:items-center mb-6">
+                    
+                    <div class="md:w-1/3">
+                        <label class="block text-gray-500 font-bold md:text-right mb-1 md:mb-0 pr-4">
+                            Status
+                        </label>
+                    </div>
+                    <div class="md:w-2/3">
+                        <div class="flex flex-row items-center">
+                            <label class="block text-gray-500 font-bold">
+                                <input name="teacher_status" class="mr-2 leading-tight" type="radio" value="1">
+                                <span class="text-sm">Active</span>
+                            </label>
+                            <label class="ml-4 block text-gray-500 font-bold">
+                                <input name="teacher_status" class="mr-2 leading-tight" type="radio" value="2">
+                                <span class="text-sm">In Active</span>
+                            </label>
+                        </div>
+                    </div>
+
+                </div>
+
                 <div class="md:flex md:items-center mb-6">
                     <div class="md:w-1/3">
                         <label class="block text-gray-500 font-bold md:text-right mb-1 md:mb-0 pr-4">
@@ -119,9 +110,6 @@
                     </div>
                     <div class="md:w-2/3">
                         <input name="current_address" class="bg-gray-200 appearance-none border-2 border-gray-200 rounded w-full py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-blue-500" type="text" value="{{ old('current_address') }}">
-                        @error('current_address')
-                            <p class="text-red-500 text-xs italic">{{ $message }}</p>
-                        @enderror
                     </div>
                 </div>
                 <div class="md:flex md:items-center mb-6">
@@ -132,9 +120,6 @@
                     </div>
                     <div class="md:w-2/3">
                         <input name="permanent_address" class="bg-gray-200 appearance-none border-2 border-gray-200 rounded w-full py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-blue-500" type="text" value="{{ old('permanent_address') }}">
-                        @error('permanent_address')
-                            <p class="text-red-500 text-xs italic">{{ $message }}</p>
-                        @enderror
                     </div>
                 </div>
                 <div class="md:flex md:items-center mb-6">
