@@ -10,16 +10,17 @@ class TeacherModel extends Model
     use HasFactory;
 
     protected $table = 'teacher';
+    protected $guarded = ['_token'];  
 
     protected $fillabale = [
         'name',
         'gender',
         'phone',
         'gender',
-        'date_of_birth',
+        'dob',
         'profile_image',
         'current_address',
-        'permanent_address'
+        'permanent_address',
     ];
 
     

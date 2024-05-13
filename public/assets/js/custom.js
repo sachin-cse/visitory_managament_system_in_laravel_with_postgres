@@ -4,6 +4,14 @@ $(document).ready(function(){
     var base_url = window.location.origin;
     // alert(base_url);
 
+    $.validator.addMethod(
+        "regex",
+        function(value, element, regexp) {
+          var re = new RegExp(regexp);
+          return this.optional(element) || re.test(value);
+        }
+      );
+
     $('#registerUser').validate({
         rules:{
             name:"required",
@@ -276,7 +284,7 @@ $(document).ready(function(){
                     if(response.status==200){
                         toastr.success(response.message);
                         setTimeout(function(){
-                            window.location.reload();
+                            window.location.reload(true);
                         },1000)
                     } else if(response.status==500){
                         toastr.error(response.message);
@@ -291,6 +299,154 @@ $(document).ready(function(){
             });
         }
     });
+
+    // add or update profile
+    $('#save_data').validate({
+        rules:{
+            name:{
+                required:true,
+                minlength:6,
+                regex:'^[a-zA-Z ]',
+            },
+            phone:{
+                required:true,
+                regex:'^[0-9]{10,15}$',
+                minlength:10,
+                maxlength:15,
+            },
+            gender:{
+                required:true,
+            },
+            teacher_status:{
+                required:true,
+            },
+            dateofbirth:{
+                required:true,
+            },
+            current_address:{
+                required:true,
+            },
+            permanent_address:{
+                required:true,
+            },
+            profile_picture:{
+                required:true,
+                filesize: 200000
+            }
+        },
+        messages:{
+            name:{
+                required:"Please enter your name",
+                minlength:"Invalid name",
+                regex:"Please enter your name properly"
+            },
+            phone:{
+                required:"Please enter your phone number",
+                minlength:"Phone number at least {0} characters long",
+                maxlength:"Phone number at most {0} characters long",
+                regex:"Invalid phone number",
+            },
+            gender:{
+                required:"Please choose your gender",
+            },
+            teacher_status:{
+                required:"Please choose status"
+            },
+            dateofbirth:{
+                required:"Please select your date of birth",
+            },
+            current_address:{
+                required:"Please enter your current address",
+            },
+            permanent_address:{
+                required:"Please enter your permanent address",
+            },
+            profile_picture:{
+                required:"Please upload your profile picture",
+            }
+        },
+        submitHandler: function(form) {
+            var formData = new FormData(form);
+            $.ajax({
+                url: form.action,
+                type: form.method,
+                contentType: 'multipart/form-data',
+                cache: false,
+                contentType: false,
+                processData: false,
+                data: formData,
+                success: function(response) {
+                    if(response.status==200){
+                        toastr.success(response.message);
+                        setTimeout(function(){
+                            window.location.reload(true);
+                        },1000)
+                    } else if(response.status==500){
+                        toastr.error(response.message);
+                    } else {
+                        toastr.error(response.message);
+                    }
+                }         
+            });
+        }
+    });
+
+    // delete data
+    $('.delete-user').on('click', function(e){
+        e.preventDefault();
+        var dataUrl = $(this).attr('data-url');
+        var value = confirm('Are you sure you want to delete this?');
+        if(value){
+            $.ajax({
+                url:dataUrl,
+                type:'GET',
+                success:function(response){
+                    if(response.status == 200){
+                        toastr.success(response.message);
+                        setTimeout(function(){
+                            window.location.reload(true);
+                        },1000)
+                    }else{
+                        toastr.error('data not found');
+                    }
+                }
+            });
+        }
+    });
+
+    // change status
+    $('.change-status').on('click', function(e){
+        e.preventDefault();
+        var dataUrl = $(this).attr('data-url');
+        var dataValue = $(this).attr('data-value');
+        $.ajax({
+            url:dataUrl,
+            type:'GET',
+            data:{statusVal:dataValue},
+            success:function(response){
+                if(response.status == 200){
+                    toastr.success(response.message);
+                    setTimeout(function(){
+                        window.location.reload(true);
+                    },1000)
+                }else{
+                    toastr.error('data not found');
+                }
+            }
+        });
+        
+    });
+
+    // close modal
+    $('.close-model').on('click', function(){
+        $('#UserRoleModel').modal('hide');
+    });
+
+    // set user role
+    $('.show_user_model').on('click', function(){
+        $('#UserRoleModel').modal('show');
+    });
+
 
 });
 

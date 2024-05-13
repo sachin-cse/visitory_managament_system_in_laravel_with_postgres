@@ -9,9 +9,9 @@
     <title>{{ config('app.name', 'Laravel') }}</title>
 
     <link href="{{ asset('assets/css/app.css') }}" rel="stylesheet">
+    <link href="{{ asset('assets/css/bootstrap.css') }}" rel="stylesheet">
     <link href="{{ asset('assets/css/jquery-ui.min.css') }}" rel="stylesheet">
     <script src="{{asset('assets/js/jquery.min.js')}}"></script>
-    <script src="{{asset('assets/js/bootstrap.js')}}"></script>
     <link rel="stylesheet" href={{asset('assets/css/toastr.min.css')}}>
     
 </head>
@@ -36,6 +36,7 @@
     </div>
 
     <script src="{{ asset('assets/js/app.js') }}"></script>
+    <script src="{{asset('assets/js/bootstrap.js')}}"></script>
     <script src="{{asset('assets/js/toastr.min.js')}}"></script>
     <script src="{{asset('assets/js/jquery.validate.min.js')}}"></script>
     <script src="{{ asset('assets/js/custom.js') }}"></script>

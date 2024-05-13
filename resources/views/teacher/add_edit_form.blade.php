@@ -15,10 +15,13 @@
             </div>
         </div>
         <!-- Log on to codeastro.com for more projects -->
+        {{-- @dd($data->id); --}}
         <div class="table w-full mt-8 bg-white rounded">
-            <form action="javascript:void(0);" method="POST" class="w-full max-w-xl px-6 py-12" enctype="multipart/form-data">
+            <form action="{{route('admin.teacher.handle_teacher_action_type', 'save')}}" method="POST" class="w-full max-w-xl px-6 py-12" enctype="multipart/form-data" id="save_data">
                 @csrf
                 <input type="hidden" value="save_data" name="mode">
+                <input type="hidden" value="{{\Auth::user()->id}}" name="user_id">
+                <input type="hidden" value="{{$data->id??0}}" name="id">
                 @csrf
                 <div class="md:flex md:items-center mb-6">
                     <div class="md:w-1/3">
@@ -27,7 +30,7 @@
                         </label>
                     </div>
                     <div class="md:w-2/3">
-                        <input name="name" class="bg-gray-200 appearance-none border-2 border-gray-200 rounded w-full py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-blue-500" type="text" value="{{ old('name') }}">
+                        <input name="name" class="bg-gray-200 appearance-none border-2 border-gray-200 rounded w-full py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-blue-500" type="text" value="{{ old('name', $data->name??'') }}">
                     </div>
                 </div>
                 <div class="md:flex md:items-center mb-6">
@@ -37,7 +40,7 @@
                         </label>
                     </div>
                     <div class="md:w-2/3">
-                        <input name="phone" class="bg-gray-200 appearance-none border-2 border-gray-200 rounded w-full py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-blue-500" type="text" value="{{ old('phone') }}">
+                        <input name="phone" class="bg-gray-200 appearance-none border-2 border-gray-200 rounded w-full py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-blue-500" type="text" value="{{ old('phone', $data->phone??'') }}">
                     </div>
                 </div>
                 <!-- Log on to codeastro.com for more projects -->
@@ -51,15 +54,15 @@
                     <div class="md:w-2/3">
                         <div class="flex flex-row items-center">
                             <label class="block text-gray-500 font-bold">
-                                <input name="gender" class="mr-2 leading-tight" type="radio" value="male">
+                                <input name="gender" class="mr-2 leading-tight" type="radio" value="male" {{ ($data->gender??''=="male")? "checked" : "" }}>
                                 <span class="text-sm">Male</span>
                             </label>
                             <label class="ml-4 block text-gray-500 font-bold">
-                                <input name="gender" class="mr-2 leading-tight" type="radio" value="female">
+                                <input name="gender" class="mr-2 leading-tight" type="radio" value="female" {{ ($data->gender??''=="female")? "checked" : "" }}>
                                 <span class="text-sm">Female</span>
                             </label>
                             <label class="ml-4 block text-gray-500 font-bold">
-                                <input name="gender" class="mr-2 leading-tight" type="radio" value="other">
+                                <input name="gender" class="mr-2 leading-tight" type="radio" value="other" {{ ($data->gender??''=="female")? "other" : "" }}>
                                 <span class="text-sm">Other</span>
                             </label>
                         </div>
@@ -77,11 +80,11 @@
                     <div class="md:w-2/3">
                         <div class="flex flex-row items-center">
                             <label class="block text-gray-500 font-bold">
-                                <input name="teacher_status" class="mr-2 leading-tight" type="radio" value="1">
+                                <input name="teacher_status" class="mr-2 leading-tight" type="radio" value="1" {{ ($data->teacher_status??''=="1")? "checked" : "" }}>
                                 <span class="text-sm">Active</span>
                             </label>
                             <label class="ml-4 block text-gray-500 font-bold">
-                                <input name="teacher_status" class="mr-2 leading-tight" type="radio" value="2">
+                                <input name="teacher_status" class="mr-2 leading-tight" type="radio" value="2" {{ ($data->teacher_status??''=="2")? "checked" : "" }}>
                                 <span class="text-sm">In Active</span>
                             </label>
                         </div>
@@ -96,10 +99,7 @@
                         </label>
                     </div>
                     <div class="md:w-2/3">
-                        <input name="dateofbirth" id="datepicker-tc" autocomplete="off" class="bg-gray-200 appearance-none border-2 border-gray-200 rounded w-full py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-blue-500" type="text" value="{{ old('dateofbirth') }}">
-                        @error('dateofbirth')
-                            <p class="text-red-500 text-xs italic">{{ $message }}</p>
-                        @enderror
+                        <input name="dob" id="datepicker-tc" autocomplete="off" class="bg-gray-200 appearance-none border-2 border-gray-200 rounded w-full py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-blue-500" type="text" value="{{ old('dob', $data->dob??'') }}">
                     </div>
                 </div>
                 <div class="md:flex md:items-center mb-6">
@@ -109,7 +109,7 @@
                         </label>
                     </div>
                     <div class="md:w-2/3">
-                        <input name="current_address" class="bg-gray-200 appearance-none border-2 border-gray-200 rounded w-full py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-blue-500" type="text" value="{{ old('current_address') }}">
+                        <input name="current_address" class="bg-gray-200 appearance-none border-2 border-gray-200 rounded w-full py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-blue-500" type="text" value="{{ old('current_address', $data->current_address??'') }}">
                     </div>
                 </div>
                 <div class="md:flex md:items-center mb-6">
@@ -119,7 +119,7 @@
                         </label>
                     </div>
                     <div class="md:w-2/3">
-                        <input name="permanent_address" class="bg-gray-200 appearance-none border-2 border-gray-200 rounded w-full py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-blue-500" type="text" value="{{ old('permanent_address') }}">
+                        <input name="permanent_address" class="bg-gray-200 appearance-none border-2 border-gray-200 rounded w-full py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-blue-500" type="text" value="{{ old('permanent_address', $data->permanent_address??'') }}">
                     </div>
                 </div>
                 <div class="md:flex md:items-center mb-6">
@@ -129,7 +129,9 @@
                         </label>
                     </div>
                     <div class="md:w-2/3">
-                        <input name="profile_picture" class="bg-gray-200 appearance-none border-2 border-gray-200 rounded w-full py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-blue-500" type="file">
+                        <img src="{{!empty($data->profile_image??'') ? asset('assets/teacher_profile/'.$data->profile_image??''):asset('assets/user/profile/no_image.jpg')}}" width="50" height="50" id="profile_image">
+                        <input name="profile_image" class="bg-gray-200 appearance-none border-2 border-gray-200 rounded w-full py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-blue-500" type="file" onchange="previewImage('profile_image', this)">
+                        <input name="hidden_profile_image" value="{{$data->profile_image??''}}" class="bg-gray-200 appearance-none border-2 border-gray-200 rounded w-full py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-blue-500" type="hidden">
                     </div>
                 </div>
 
