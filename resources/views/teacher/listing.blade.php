@@ -82,7 +82,7 @@
 
 {{-- model for set user role --}}
 <div class="modal fade" id="UserRoleModel" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog" role="document">
+    <div class="modal-dialog modal-lg" role="document">
       <div class="modal-content">
         <div class="modal-header">
           <h5 class="modal-title" id="exampleModalLabel">Set User Role</h5>
@@ -91,7 +91,42 @@
           </button>
         </div>
         <div class="modal-body">
-            fgjghuk
+            <form method="post" action="{{route('admin.teacher.handle_teacher_action_type', 'user-role')}}" id="user_role">
+                <div class="col-6">
+                    <div class="mb-3">
+                        <label for="user_name">Username<span class="text-danger">*</span></label>
+                        <input type="text" class="form-control" value="" name="username" id="user_name">
+                    </div>
+                </div>
+
+                <div class="col-6">
+                    <div class="mb-3">
+                        <label for="user_email">Email<span class="text-danger">*</span></label>
+                        <input type="email" class="form-control" value="" name="email" id="email">
+                    </div>
+                </div>
+
+                <div class="col-6">
+                    <div class="mb-3">
+                        <label for="user_password">Password<span class="text-danger">*</span></label>
+                        <input type="password" class="form-control password" value="" name="user_password" id="user_password">
+                        <span toggle="#password-field" class="fa fa-eye toggle-password"></span>
+
+                    </div>
+                </div>
+                <div class="col-6">
+                    <div class="mb-3">
+                        <label for="user_role">User Role<span class="text-danger">*</span></label>
+                        <select name="user_role" class="form-control">
+                            @if(!empty(getUserRole()))
+                                @foreach(getUserRole() as $key=>$value)
+                                <option value="{{$key}}">{{$value}}</option>
+                                @endforeach
+                            @endif
+                        </select>
+                    </div>
+                </div>
+            </form>
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-secondary close-model" data-dismiss="modal">Close</button>
@@ -99,6 +134,6 @@
         </div>
       </div>
     </div>
-  </div>
+</div>
 
 

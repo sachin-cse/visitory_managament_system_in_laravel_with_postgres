@@ -447,6 +447,13 @@ $(document).ready(function(){
         $('#UserRoleModel').modal('show');
     });
 
+    // password show and hide
+    $(document).on('click', '.toggle-password',function(){
+        $(this).toggleClass('fa-eye fa-eye-slash');
+        var input = $('.password');
+        input.attr('type') === 'password' ? input.attr('type', 'text') : input.attr('type', 'password');
+    });
+
 
 });
 

@@ -17,7 +17,7 @@
         <!-- Log on to codeastro.com for more projects -->
         {{-- @dd($data->id); --}}
         <div class="table w-full mt-8 bg-white rounded">
-            <form action="{{route('admin.teacher.handle_teacher_action_type', 'save')}}" method="POST" class="w-full max-w-xl px-6 py-12" enctype="multipart/form-data" id="save_data">
+            <form action="{{route('admin.teacher.handle_teacher_action_type', 'user-role')}}" method="POST" class="w-full max-w-xl px-6 py-12" enctype="multipart/form-data" id="save_data">
                 @csrf
                 <input type="hidden" value="save_data" name="mode">
                 <input type="hidden" value="{{\Auth::user()->id}}" name="user_id">

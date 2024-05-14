@@ -10,6 +10,7 @@
 
     <link href="{{ asset('assets/css/app.css') }}" rel="stylesheet">
     <link href="{{ asset('assets/css/bootstrap.css') }}" rel="stylesheet">
+    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet">
     <link href="{{ asset('assets/css/jquery-ui.min.css') }}" rel="stylesheet">
     <script src="{{asset('assets/js/jquery.min.js')}}"></script>
     <link rel="stylesheet" href={{asset('assets/css/toastr.min.css')}}>
