@@ -1,5 +1,8 @@
 @extends('layouts.app')
 
+@section('title')
+Teachers
+@endsection
 
 @section('content')
     <div class="roles-permissions">
@@ -66,7 +69,7 @@
                                 </a>
                                 @endif
 
-                                <a href="javascript:void(0);" data-value="1" data-url="{{ route('admin.teacher.handle_teacher_action_type', ['action_type' => 'change-status', 'id' => $value->id]) }}" class="ml-1 bg-grey-600 block p-1 border border-none-600 rounded-sm show_user_model" title="Set User Role">
+                                <a href="javascript:void(0);" data-value="{{$value->id??''}}" data-url="{{route('admin.teacher.listing', 'listing')}}" class="ml-1 bg-grey-600 block p-1 border border-none-600 rounded-sm show_user_model" title="Set User Role">
                                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" class="h-3 w-3 fill-current text-grey-100" data-prefix="fas" data-icon="fa-user" class="svg-inline--fa fa-user fa-w-14" role="img" viewBox="0 0 512 512"><path d="M224 256A128 128 0 1 0 224 0a128 128 0 1 0 0 256zm-45.7 48C79.8 304 0 383.8 0 482.3C0 498.7 13.3 512 29.7 512H418.3c16.4 0 29.7-13.3 29.7-29.7C448 383.8 368.2 304 269.7 304H178.3z"/></svg>
                                 </a>
 
@@ -83,57 +86,61 @@
 {{-- model for set user role --}}
 <div class="modal fade" id="UserRoleModel" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg" role="document">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title" id="exampleModalLabel">Set User Role</h5>
-          <button type="button" class="close close-model" data-dismiss="modal" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
-          </button>
-        </div>
-        <div class="modal-body">
-            <form method="post" action="{{route('admin.teacher.handle_teacher_action_type', 'user-role')}}" id="user_role">
-                <div class="col-6">
-                    <div class="mb-3">
-                        <label for="user_name">Username<span class="text-danger">*</span></label>
-                        <input type="text" class="form-control" value="" name="username" id="user_name">
-                    </div>
-                </div>
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Set User Role</h5>
+                <button type="button" class="close close-model" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form method="post" action="{{ route('admin.teacher.handle_teacher_action_type', 'user-role') }}" id="user_role">
+                    @csrf
+                    <div class="row">
+                        <div class="col-6">
+                            <div class="mb-3">
+                                <label for="user_name">Username<span class="text-danger">*</span></label>
+                                <input type="text" class="form-control" value="{{ $teacherData->username ?? '' }}" name="username" id="user_name">
+                                <input type="hidden" value="{{ $teacherData->id ?? 0 }}" name="hidden_id" id="hidden_id">
+                                <input type="hidden" value="{{ $teacherData->teacher->id ?? 0 }}" name="teacher_id" id="teacher_id">
+                            </div>
+                        </div>
 
-                <div class="col-6">
-                    <div class="mb-3">
-                        <label for="user_email">Email<span class="text-danger">*</span></label>
-                        <input type="email" class="form-control" value="" name="email" id="email">
-                    </div>
-                </div>
+                        <div class="col-6">
+                            <div class="mb-3">
+                                <label for="user_email">Email<span class="text-danger">*</span></label>
+                                <input type="email" class="form-control" value="{{ $teacherData->email ?? '' }}" name="email" id="user_email">
+                            </div>
+                        </div>
 
-                <div class="col-6">
-                    <div class="mb-3">
-                        <label for="user_password">Password<span class="text-danger">*</span></label>
-                        <input type="password" class="form-control password" value="" name="user_password" id="user_password">
-                        <span toggle="#password-field" class="fa fa-eye toggle-password"></span>
+                        <div class="col-6">
+                            <div class="mb-3">
+                                <label for="user_password">Password<span class="text-danger">*</span></label>
+                                <input type="password" class="form-control password" value="12345678" name="password" id="user_password">
+                                <span toggle="#user_password" class="fa fa-eye toggle-password"></span>
+                            </div>
+                        </div>
 
+                        <div class="col-6">
+                            <div class="mb-3">
+                                <label for="user_role">User Role<span class="text-danger">*</span></label>
+                                <select name="user_role" class="form-control" id="user_type">
+                                        <option value="teacher" {{($teacherData->type??'') == 'teacher' ? 'selected':''}}>Teacher
+                                        </option>
+                                </select>
+                            </div>
+                        </div>
                     </div>
-                </div>
-                <div class="col-6">
-                    <div class="mb-3">
-                        <label for="user_role">User Role<span class="text-danger">*</span></label>
-                        <select name="user_role" class="form-control">
-                            @if(!empty(getUserRole()))
-                                @foreach(getUserRole() as $key=>$value)
-                                <option value="{{$key}}">{{$value}}</option>
-                                @endforeach
-                            @endif
-                        </select>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary close-model" data-dismiss="modal">Close</button>
+
+                        <button type="submit" class="btn btn-primary">@if(!empty($teacherData->id))Save changes @else Update changes @endif</button>
                     </div>
-                </div>
-            </form>
+                </form>
+            </div>
         </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-secondary close-model" data-dismiss="modal">Close</button>
-          <button type="button" class="btn btn-primary">Save changes</button>
-        </div>
-      </div>
     </div>
 </div>
+
 
 

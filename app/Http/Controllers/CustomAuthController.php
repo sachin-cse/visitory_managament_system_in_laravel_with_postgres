@@ -55,7 +55,8 @@ class CustomAuthController extends Controller
         $saveUser->password = $request->password;
 
         try{
-            if($saveUser->save()){    
+            if($saveUser->save()){ 
+                \Session::put('email', $request->email);   
                 return response()->json([
                 'status' => 201,
                 'message' => 'User created successfully'

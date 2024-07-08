@@ -444,6 +444,25 @@ $(document).ready(function(){
 
     // set user role
     $('.show_user_model').on('click', function(){
+
+        var dataId = $(this).data('value');
+        var dataUrl = $(this).data('url');
+        $.ajax({
+            type:'GET',
+            url:dataUrl,
+            dataType:'json',
+            data:{id:dataId},
+            success:function(data){
+                console.log(data);
+                $('#user_email').val(data.teacherData.email);
+                $('#user_type').val(data.teacherData.type);
+                $('#user_name').val(data.teacherData.username);
+                $('#hidden_id').val(data.teacherData.id);
+                $('#hidden_id').val(data.teacherData.id);
+                $('#teacher_id').val(data.teacherData.teacher.id);
+            }
+
+        });
         $('#UserRoleModel').modal('show');
     });
 
@@ -452,6 +471,58 @@ $(document).ready(function(){
         $(this).toggleClass('fa-eye fa-eye-slash');
         var input = $('.password');
         input.attr('type') === 'password' ? input.attr('type', 'text') : input.attr('type', 'password');
+    });
+
+    // set user role
+    $('#user_role').validate({
+        rules:{
+            username:{
+                required:true,
+                regex:'^[a-zA-Z0-9 ]',
+            },
+            email:{
+                required:true,
+                email:true
+            },
+            password:{
+                required:true,
+                maxlength:8,
+            }
+        },
+        messages:{
+            username:{
+                required:"Please enter your username name",
+                regex:"Please enter your username properly"
+            },
+            email:{
+                required:"Please enter your email address",
+                email:"Please enter your valid email address",
+            },
+            password:{
+                required:"Please enter your password",
+                maxlength:"Please enter your password maximum 8 characters long"
+            }
+        },
+        submitHandler: function(form) {
+            $.ajax({
+                url: form.action,
+                type: form.method,
+                dataType: "json",
+                data: $('form').serialize(),
+                success: function(response) {
+                    if(response.status==200){
+                        toastr.success(response.message);
+                        setTimeout(function(){
+                            window.location.reload(true);
+                        },1000)
+                    } else if(response.status==500){
+                        toastr.error(response.message);
+                    } else {
+                        toastr.error(response.message);
+                    }
+                }         
+            });
+        }
     });
 
 

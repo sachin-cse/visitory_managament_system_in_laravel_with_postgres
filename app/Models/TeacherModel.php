@@ -2,8 +2,9 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
+use App\Models\User;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class TeacherModel extends Model
 {
@@ -22,7 +23,5 @@ class TeacherModel extends Model
         'current_address',
         'permanent_address',
     ];
-
-    
 
 }

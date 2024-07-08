@@ -3,9 +3,9 @@ if(!function_exists('getUserRole')){
 
     function getUserRole(){
         $userRole = [
-            '1' => 'Teacher',
-            '2' => 'Student',
-            '3'=>'Parent'
+            '2' => 'Teacher',
+            '3' => 'Student',
+            '4'=>'Parents'
         ];
     
         return $userRole;

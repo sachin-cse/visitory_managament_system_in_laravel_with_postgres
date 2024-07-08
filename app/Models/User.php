@@ -4,14 +4,16 @@ namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 
+use App\Models\TeacherModel;
 use Laravel\Sanctum\HasApiTokens;
-use Illuminate\Support\Facades\Hash;
 
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
+use Spatie\Permission\Traits\HasRoles;
 
 
 
@@ -19,6 +21,7 @@ class User extends Authenticatable
 {
     use HasApiTokens, HasFactory, Notifiable;
     use SoftDeletes;
+    use HasRoles;
 
 
     /**
@@ -47,6 +50,9 @@ class User extends Authenticatable
      *
      * @var array<int, string>
      */
+
+    protected $with = ['teacher'];
+
     protected $hidden = [
         'password',
         'remember_token',
@@ -65,6 +71,10 @@ class User extends Authenticatable
     public function setPasswordAttribute($value){
 
         $this->attributes['password'] = Hash::make($value);
+    }
+
+    public function teacher(){
+        return $this->belongsTo(TeacherModel::class, 'teacher_id', 'id');
     }
 
 }

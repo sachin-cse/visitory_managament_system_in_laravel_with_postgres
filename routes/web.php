@@ -17,8 +17,6 @@ use App\Http\Controllers\CustomAuthController;
 |
 */
 
-require __DIR__.'/teacher.php';
-require __DIR__.'/auth.php';
 
 
 Route::get('/', function () {
@@ -42,6 +40,14 @@ Route::group(['prefix'=>'admin','as'=>'admin.'], function(){
     Route::post('/send-reset-link', [CustomAuthController::class, 'SendResetLink'])->name('send-link');
     Route::get('/show-reset-password-view/{token}', [CustomAuthController::class, 'ChangePasswordView'])->name('reset-password-view');
     Route::post('/change-password', [CustomAuthController::class, 'ChangePassword'])->name('change-password');
+});
+
+require __DIR__.'/teacher.php';
+require __DIR__.'/auth.php';
+require __DIR__.'/subject.php';
+
+Route::fallback(function(){
+    return \Response::view('errors.404');
 });
 
 

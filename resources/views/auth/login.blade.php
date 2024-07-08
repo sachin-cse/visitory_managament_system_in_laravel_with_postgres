@@ -11,7 +11,7 @@
                         <form action="{{route('admin.loginUser')}}" method="POST" id="loginUser">
                             @csrf
                             <div class="form-group mb-3">
-                                <input type="text" name="email" class="form-control" placeholder="enter your email">
+                                <input type="text" name="email" class="form-control" placeholder="enter your email" value="{{\Session::get('email')}}">
                             </div>
                             <div class="form-group mb-3">
                                 <input type="password" name="password" class="form-control" placeholder="enter your password">

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Teacher;
 
+use App\Models\User;
 use App\Models\TeacherModel;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
@@ -10,17 +11,21 @@ use Illuminate\Support\Facades\Validator;
 class TeacherController extends Controller
 {
 
-    function __construct(TeacherModel $TeacherModel){
+    function __construct(TeacherModel $TeacherModel, User $userModel){
         $this->TeacherModel = $TeacherModel;
+        $this->User = $userModel;
     }
 
     // view part of teacher listing
     public function index(Request $request, $request_type){
         try{
             if(view()->exists('teacher.'.$request_type.'')){
+                $teacherData = $this->User->with('teacher')->where('teacher_id', $request->id)->first();
+                if(!empty($teacherData)){
+                    return response()->json(['teacherData'=>$teacherData]);
+                }
                 $data = $this->TeacherModel->select('*',\DB::raw('CASE WHEN teacher_status = 1 THEN "Active" ELSE "Inactive" END AS status'))->get();
-                // dd($data);
-                return view('teacher.'.$request_type.'', ['data' => $data??'']);
+                return view('teacher.'.$request_type.'', ['data' => $data??'', 'teacherData'=>$teacherData]);
             } else {
                 throw new \Exception('teacher.'.$request_type.' view does not exist');
             }
@@ -163,6 +168,54 @@ class TeacherController extends Controller
                         'status' => 500,
                         'message' => $e->getMessage(),
                     ]);
+                }
+            }
+            // user role
+            if($action_type == 'user-role'){
+                $data = $request->all();
+
+                $rules = [
+                    'username' => 'required|regex:/^[a-zA-Z0-9 ]+$/u|unique:users,username,'.$data['hidden_id'].',id,deleted_at,NULL',
+                    'email'=>'required|email|unique:users,email,'.$data['hidden_id'].',id,deleted_at,NULL'
+                ];
+
+                $validator = Validator::make($request->all(), $rules, [
+                    'username.required'=>'Please enter your username',
+                    'username.regex' => 'Please enter your username properly',
+                    'username.unique'=>'This username is already taken',
+                    'email.required'=>'Please enter your email address',
+                    'email.email'=>'Please enter your valid email address',
+                    'email.unique'=>'This email is already taken',
+                ]);
+
+                if($validator->fails()){
+                    return response()->json([
+                        'status'=>500,
+                        'message'=>$validator->errors()->first()
+                    ]);
+                }
+                if($request->ajax() && $request->method() == 'POST'){
+                    if($data['hidden_id'] <= 0){
+                        $saveData = $this->User;
+                        $saveData['teacher_id'] = $data['teacher_id'];
+                        $saveData['type'] = $data['user_role'];
+                        $saveData->fill($data);
+                        $saveData->save();
+                        return response()->json([
+                            'status'=>200,
+                            'message'=> 'User Role create successfully',
+                        ]);
+                    } else {
+                        $saveData = $this->User->find($data['hidden_id']);
+                        $saveData['teacher_id'] = $data['teacher_id'];
+                        $saveData['type'] = $data['user_role'];
+                        $saveData->fill($data);
+                        $saveData->save();
+                        return response()->json([
+                            'status'=>200,
+                            'message'=> 'User update successfully',
+                        ]);
+                    }
                 }
             }
         
