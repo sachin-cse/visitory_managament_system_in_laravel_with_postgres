@@ -51,22 +51,24 @@
                             Gender
                         </label>
                     </div>
+
                     <div class="md:w-2/3">
                         <div class="flex flex-row items-center">
                             <label class="block text-gray-500 font-bold">
-                                <input name="gender" class="mr-2 leading-tight" type="radio" value="male" {{ ($data->gender??''=="male")? "checked" : "" }}>
+                                <input name="gender" class="mr-2 leading-tight" type="radio" value="male" {{ $data->gender  == 'male' ? 'checked' : '' }}>
                                 <span class="text-sm">Male</span>
                             </label>
                             <label class="ml-4 block text-gray-500 font-bold">
-                                <input name="gender" class="mr-2 leading-tight" type="radio" value="female" {{ ($data->gender??''=="female")? "checked" : "" }}>
+                                <input name="gender" class="mr-2 leading-tight" type="radio" value="female" {{ $data->gender  == 'female' ? 'checked' : '' }}>
                                 <span class="text-sm">Female</span>
                             </label>
                             <label class="ml-4 block text-gray-500 font-bold">
-                                <input name="gender" class="mr-2 leading-tight" type="radio" value="other" {{ ($data->gender??''=="female")? "other" : "" }}>
+                                <input name="gender" class="mr-2 leading-tight" type="radio" value="other" {{ $data->gender  == 'other' ? 'checked' : '' }}>
                                 <span class="text-sm">Other</span>
                             </label>
                         </div>
                     </div>
+                    
 
                 </div>
 
@@ -80,11 +82,11 @@
                     <div class="md:w-2/3">
                         <div class="flex flex-row items-center">
                             <label class="block text-gray-500 font-bold">
-                                <input name="teacher_status" class="mr-2 leading-tight" type="radio" value="1" {{ ($data->teacher_status??''=="1")? "checked" : "" }}>
+                                <input name="teacher_status" class="mr-2 leading-tight" type="radio" value="1" {{$data->teacher_status == "1" ? "checked" : "" }}>
                                 <span class="text-sm">Active</span>
                             </label>
                             <label class="ml-4 block text-gray-500 font-bold">
-                                <input name="teacher_status" class="mr-2 leading-tight" type="radio" value="2" {{ ($data->teacher_status??''=="2")? "checked" : "" }}>
+                                <input name="teacher_status" class="mr-2 leading-tight" type="radio" value="2" {{ $data->teacher_status == "2"? "checked" : "" }}>
                                 <span class="text-sm">In Active</span>
                             </label>
                         </div>

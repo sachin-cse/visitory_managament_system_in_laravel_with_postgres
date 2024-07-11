@@ -21,7 +21,7 @@ class TeacherController extends Controller
         try{
             if(view()->exists('teacher.'.$request_type.'')){
                 $teacherData = $this->User->with('teacher')->where('teacher_id', $request->id)->first();
-                if(!empty($teacherData)){
+                if(!empty($teacherData->teacher)){
                     return response()->json(['teacherData'=>$teacherData]);
                 }
                 $data = $this->TeacherModel->select('*',\DB::raw('CASE WHEN teacher_status = 1 THEN "Active" ELSE "Inactive" END AS status'))->get();
@@ -82,7 +82,7 @@ class TeacherController extends Controller
                 }
                 try{
                     // dd($post_data['id']);
-                    if($post_data['id'] > 0){
+                    if($post_data['id'] > 0){   
                         if($request->hasfile('profile_image')){
                             $file = $request->file('profile_image');
                             $image_name = pathinfo($request->profile_image->getClientOriginalName(), PATHINFO_FILENAME);

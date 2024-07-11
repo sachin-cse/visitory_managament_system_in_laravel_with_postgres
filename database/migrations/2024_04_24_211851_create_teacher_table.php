@@ -13,11 +13,11 @@ return new class extends Migration
     {
         Schema::create('teacher', function (Blueprint $table) {
             $table->id();
-            $table->unsignedInteger('user_id');
+            $table->unsignedBigInteger('user_id');
             $table->string('name', 50)->nullable();
             $table->enum('gender', ['Male', 'Female', 'Other'])->default('Male');
             $table->string('phone', 12)->nullable()->unique();
-            $table->date('dob')->nullbale();
+            $table->date('dob')->nullabale();
             $table->string('profile_image', 255)->nullable();
             $table->text('current_address')->nullable();
             $table->text('permanent_address')->nullable();

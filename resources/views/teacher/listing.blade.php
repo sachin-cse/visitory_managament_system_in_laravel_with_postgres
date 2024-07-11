@@ -2,8 +2,7 @@
 
 @section('title')
 Teachers
-@endsection
-
+@endsection 
 @section('content')
     <div class="roles-permissions">
         <div class="flex items-center justify-between mb-6">
