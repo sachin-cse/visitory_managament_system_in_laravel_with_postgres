@@ -525,6 +525,62 @@ $(document).ready(function(){
         }
     });
 
+    // send save subject request
+     $('#teacher_save_data').validate({
+        rules:{
+            subject_name:{
+                required:true,
+                regex:'^[a-zA-Z0-9 ]',
+            },
+            subject_code:{
+                required:true,
+                regex:'^[a-zA-Z0-9 ]',
+            },
+            teacher_id:{
+                required:true,
+            },
+            subject_description:{
+                required:true,
+            }
+        },
+        messages:{
+            name:{
+                required:"Please enter your subject name",
+                regex:"Please enter your subject name properly"
+            },
+            subject_name:{
+                required:"Please enter your subject code",
+                regex:"Please enter your subject code properly",
+            },
+            teacher_id:{
+                required:"Please select teacher",
+            },
+            subject_description:{
+                required:"Please enter subject description",
+            }
+        },
+        submitHandler: function(form) {
+            $.ajax({
+                url: form.action,
+                type: form.method,
+                dataType:'json',
+                data: $('form').serialize(),
+                success: function(response) {
+                    if(response.status==200 && response.flag !== 'error'){
+                        toastr.success(response.message);
+                        setTimeout(function(){
+                            window.location.reload(true);
+                        },1000)
+                    } else if(response.status==500){
+                        toastr.error(response.message);
+                    } else {
+                        toastr.error(response.message);
+                    }
+                }         
+            });
+        }
+    });
+
 
 });
 

@@ -17,7 +17,7 @@
         <!-- Log on to codeastro.com for more projects -->
         {{-- @dd($data->id); --}}
         <div class="table w-full mt-8 bg-white rounded">
-            <form action="{{route('admin.teacher.handle_teacher_action_type', 'user-role')}}" method="POST" class="w-full max-w-xl px-6 py-12" enctype="multipart/form-data" id="save_data">
+            <form action="{{route('admin.handle_subject_request','save')}}" method="POST" class="w-full max-w-xl px-6 py-12" enctype="multipart/form-data" id="teacher_save_data">
                 @csrf
                 <input type="hidden" value="save_data" name="mode">
                 {{-- <input type="hidden" value="{{\Auth::user()->id}}" name="user_id"> --}}
@@ -57,7 +57,7 @@
                     <div class="md:w-2/3">
                         <div class="flex flex-row items-center">
                             <select name="teacher_id" class="block text-gray-500 font-bold">
-                                <option value="" selected disabled>--select teacher--</option>
+                                <option value="" disabled selected>--select teacher--</option>
                                 @if($teacher_data->count() > 0)
                                     @foreach($teacher_data as $value)
                                         <option value="{{$value->id}}">{{$value->name}}</option>

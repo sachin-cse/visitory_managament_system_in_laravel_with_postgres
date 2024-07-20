@@ -31,8 +31,8 @@ class SubjectController extends Controller
 
     // handle subject request
     public function handleSubjectRequest(Request $request, $action_type){
+        $subject_data = $request->all();
         if($action_type == 'add' || $action_type == 'edit'){
-            $subject_data = $request->all();
             $teacher_data = $this->TeacherModel->get();
             if(($subject_data['id']??0) > 0){
                 $data = $this->SubjectModel->find($subject_data['id']);
@@ -40,5 +40,28 @@ class SubjectController extends Controller
 
             return view('subject.add_edit_form', ['data'=>$data??[], 'teacher_data'=>$teacher_data??[]]);
         }
+
+        try{
+            if($subject_data['mode'] == 'save_data'){
+                if(($subject_data['id']??0) > 0){
+                    dd('Hare Krishna');
+                } else {
+                    $data = $this->SubjectModel->fill($subject_data);
+                    if($data->save()){
+                        return response()->json([
+                            'status' => 200,
+                            'message' => 'Subject add successfully',
+                        ]);
+                    }
+                }
+            }
+        }catch(Exception $e){
+            return response()->json([
+                'status' => 200,
+                'flag'=>'error',
+                'message' => $e->getMessage(),
+            ]);
+        }
+
     }
 }
