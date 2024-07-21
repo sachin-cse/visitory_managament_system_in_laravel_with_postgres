@@ -19,7 +19,9 @@ class SubjectController extends Controller
     public function index(Request $request, $view_type){
         try{
             if(view()->exists($view_type.'.listing')){
-                return view($view_type.'.listing');
+                $subject_data = $this->SubjectModel->with('teachers')->get();
+                // dd($subject_data);
+                return view($view_type.'.listing', ['subject_data'=>$subject_data??'']);
             }
 
             throw new Exception('errors.404');
@@ -40,7 +42,22 @@ class SubjectController extends Controller
 
             return view('subject.add_edit_form', ['data'=>$data??[], 'teacher_data'=>$teacher_data??[]]);
         }
+        // check subject exist or not
+        $subject_exist = $this->SubjectModel->where('subject_code', $request->subject_code)->first();
+        // dd($subject_exist);
+        if($subject_exist != null){
+            if($subject_exist->count() > 1 ){
+                return response()->json([
+                    'status' => 200,
+                    'flag'=>'error',
+                    'message' => 'This subject is already assign another teacher',
+                ]);
+            }else{
+                goto save_response;
+            }
+        }
 
+        save_response:
         try{
             if($subject_data['mode'] == 'save_data'){
                 if(($subject_data['id']??0) > 0){
