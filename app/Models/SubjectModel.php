@@ -10,6 +10,7 @@ class SubjectModel extends Model
 {
     use HasFactory;
 
+    protected  $primaryKey = 'subject_id';
     protected $table = 'subject';
     protected $guarded = ['_token'];  
 

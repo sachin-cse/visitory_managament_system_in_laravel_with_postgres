@@ -21,7 +21,7 @@
                 @csrf
                 <input type="hidden" value="save_data" name="mode">
                 {{-- <input type="hidden" value="{{\Auth::user()->id}}" name="user_id"> --}}
-                <input type="hidden" value="{{$data->id??0}}" name="id">
+                <input type="hidden" value="{{$data->subject_id??0}}" name="id">
                 @csrf
                 
                 <div class="md:flex md:items-center mb-6">
@@ -60,7 +60,7 @@
                                 <option value="" disabled selected>--select teacher--</option>
                                 @if($teacher_data->count() > 0)
                                     @foreach($teacher_data as $value)
-                                        <option value="{{$value->id}}">{{$value->name}}</option>
+                                        <option value="{{$value->id}}" {{($data->teacher_id??'') == $value->id ? 'selected':''}}>{{$value->name}}</option>
                                     @endforeach
                                 @endif
                             </select>
@@ -80,7 +80,7 @@
                     <div class="md:w-2/3">
                         <div class="flex flex-row items-center">
                             <label class="block text-gray-500 font-bold">
-                                <textarea name="subject_description" class="mr-2 leading-tight"></textarea>
+                                <textarea name="subject_description" class="mr-2 leading-tight">{{$data->subject_description??''}}</textarea>
                             </label>
                         </div>
                     </div>
