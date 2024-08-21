@@ -15,5 +15,7 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.', 'middleware' => ['custom_au
     Route::get('/teacher/{request_type}', [TeacherController::class, 'index'])
         ->where('request_type', '^(listing)$')
         ->name('teacher.listing');
+
+    Route::post('/teacher-listing/reorder', [TeacherController::class, 'reorder'])->name('teacher-listing.reorder');
 });
 ?>

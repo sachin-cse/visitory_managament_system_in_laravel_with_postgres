@@ -14,6 +14,8 @@
     <link href="{{ asset('assets/css/jquery-ui.min.css') }}" rel="stylesheet">
     <script src="{{asset('assets/js/jquery.min.js')}}"></script>
     <link rel="stylesheet" href={{asset('assets/css/toastr.min.css')}}>
+    <!-- Database CSS link ( includes Bootstrap 5 )  -->
+    <link href="https://cdn.datatables.net/1.13.2/css/dataTables.bootstrap5.min.css" rel="stylesheet" />
     
 </head>
 <!-- Log on to codeastro.com for more projects -->
@@ -41,6 +43,13 @@
     <script src="{{asset('assets/js/toastr.min.js')}}"></script>
     <script src="{{asset('assets/js/jquery.validate.min.js')}}"></script>
     <script src="{{ asset('assets/js/custom.js') }}"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.10.3/jquery-ui.min.js"></script>
+    <!-- DataTables JS CDN Link -->
+    <script src="https://cdn.datatables.net/1.13.2/js/jquery.dataTables.min.js"></script>
+    <!-- DataTables JS ( includes Bootstrap 5 for design [UI] ) CDN Link -->
+    <script src="https://cdn.datatables.net/1.13.2/js/dataTables.bootstrap5.min.js"></script>
+
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
     <script>
         $(function() {

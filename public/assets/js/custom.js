@@ -581,6 +581,58 @@ $(document).ready(function(){
         }
     });
 
+    // data reorder
+    $('#table').DataTable();
+    $( "#dataReorder" ).sortable({
+        items: "tr",
+        cursor: 'move',
+        opacity: 0.6,
+        update:function(){
+            updateReorder();
+        }
+    });
+    function updateReorder(){
+        var dataurl = $('#dataReorder').data('url');
+        Swal.fire({
+            title: "Are you sure?",
+            text: "want to reorder?",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#3085d6",
+            cancelButtonColor: "#d33",
+            confirmButtonText: "Yes"
+          }).then((result) => {
+            if (result.isConfirmed) {
+                var orderPosition = [];
+                var token = $('meta[name="csrf-token"]').attr('content');
+
+                $('tr.tableRow').each(function(index,element) {
+                    orderPosition.push({
+                        id: $(this).attr('data-id'),
+                        position: index+1
+                    });
+                });
+
+                $.ajax({
+                    type:'POST',
+                    url:dataurl,
+                    dataType: "json",
+                    data:{order:orderPosition,_token:token},
+                    success:function(response){
+                        if(response.status == 200){
+                            toastr.success(response.message);
+                            setTimeout(function(){
+                                window.location.reload(true)
+                            },2000);
+                        }else{
+                            toastr.error(response.message);
+                        }
+                    }
+                });
+            }
+          });
+    }
+
 
 });
 

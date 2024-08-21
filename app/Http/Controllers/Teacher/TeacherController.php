@@ -24,7 +24,7 @@ class TeacherController extends Controller
                 if(!empty($teacherData->teacher)){
                     return response()->json(['teacherData'=>$teacherData]);
                 }
-                $data = $this->TeacherModel->select('*',\DB::raw('CASE WHEN teacher_status = 1 THEN "Active" ELSE "Inactive" END AS status'))->get();
+                $data = $this->TeacherModel->select('*',\DB::raw('CASE WHEN teacher_status = 1 THEN "Active" ELSE "Inactive" END AS status'))->orderBy('order','asc')->get();
                 return view('teacher.'.$request_type.'', ['data' => $data??'', 'teacherData'=>$teacherData]);
             } else {
                 throw new \Exception('teacher.'.$request_type.' view does not exist');
@@ -220,5 +220,30 @@ class TeacherController extends Controller
             }
         
         
+    }
+
+    // reorder
+    public function reorder(Request $request){
+
+        try{
+            $teacher = $this->TeacherModel->all();
+            foreach($teacher as $data){
+                foreach($request->order as $position){
+                    if($data->id == $position['id']){
+                        $data->update(['order'=>$position['position']]);
+                    }
+                }
+            }
+            return response()->json([
+                'status' => 200,
+                'message' => 'Order updated successfully',
+            ]);
+        }
+        catch(\Exception $e){
+            return response()->json([
+                'status' => 500,
+                'message' => $e->getMessage(),
+            ]);
+        }
     }
 }

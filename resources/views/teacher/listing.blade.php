@@ -18,7 +18,7 @@ Teachers
         </div>
         <!-- Log on to codeastro.com for more projects -->
         <div class="mt-8 bg-white rounded border-b-4 border-gray-300">
-            <table class="w-full border-collapse">
+            <table class="w-full border-collapse" id="table">
                 <thead>
                     <tr class="uppercase text-sm font-semibold bg-gray-600 text-white rounded-tl rounded-tr">
                         <th>SN.</th>
@@ -33,12 +33,12 @@ Teachers
                         <th class="px-4 py-3 text-right">Actions</th>
                     </tr>
                 </thead>
-                <tbody>
+                <tbody id="dataReorder" data-url="{{route('admin.teacher-listing.reorder')}}">
                     @php
                      $i=1;   
                     @endphp
                     @foreach($data as $value)
-                        <tr class="text-gray-700 border-t-2 border-l-4 border-r-4 border-gray-300">
+                        <tr class="text-gray-700 border-t-2 border-l-4 border-r-4 border-gray-300 tableRow" data-id="{{$value->id}}" >
                             <td class="px-4 py-3 text-sm font-semibold text-gray-600 tracking-tight">{{$i++}}</td>
                             <td class="px-4 py-3 text-sm font-semibold text-gray-600 tracking-tight">{{$value->name}}</td>
                             <td class="px-4 py-3 text-sm font-semibold text-gray-600 tracking-tight">{{$value->gender}}</td>

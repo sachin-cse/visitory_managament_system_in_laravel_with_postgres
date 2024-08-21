@@ -19,7 +19,7 @@ class SubjectController extends Controller
     public function index(Request $request, $view_type){
         try{
             if(view()->exists($view_type.'.listing')){
-                $subject_data = $this->SubjectModel->with('teachers')->get();
+                $subject_data = $this->SubjectModel->select('*',\DB::raw('CASE WHEN subject_status = 1 THEN "Active" ELSE "Inactive" END AS status'))->with('teachers')->get();
                 // dd($subject_data);
                 return view($view_type.'.listing', ['subject_data'=>$subject_data??'']);
             }
@@ -50,6 +50,24 @@ class SubjectController extends Controller
                     'message' => 'This subject is already assign another teacher',
                 ]);
             }
+
+        // change status
+        if($action_type == 'change-status'){
+            $this->SubjectModel->find($id??'')->update(['subject_status' => $subject_data['statusVal']??'']);
+            return response()->json([
+                'status' => 200,
+                'message' => 'Status change successfully'
+            ]);
+        }
+
+        // delete data
+        if($action_type == 'delete'){
+            $this->SubjectModel->find($id??'')->delete();
+            return response()->json([
+                'status' => 200,
+                'message' => 'data deleted successfully'
+            ]);
+        }
 
         try{
             if($subject_data['mode'] == 'save_data'){
