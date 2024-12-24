@@ -24,7 +24,7 @@ class TeacherController extends Controller
                 if(!empty($teacherData->teacher)){
                     return response()->json(['teacherData'=>$teacherData]);
                 }
-                $data = $this->TeacherModel->select('*',\DB::raw('CASE WHEN teacher_status = 1 THEN "Active" ELSE "Inactive" END AS status'))->orderBy('order','asc')->get();
+                $data = $this->TeacherModel->with('subjects')->select('*',\DB::raw('CASE WHEN teacher_status = 1 THEN "Active" ELSE "Inactive" END AS status'))->orderBy('order','asc')->get();
                 return view('teacher.'.$request_type.'', ['data' => $data??'', 'teacherData'=>$teacherData]);
             } else {
                 throw new \Exception('teacher.'.$request_type.' view does not exist');
@@ -34,6 +34,7 @@ class TeacherController extends Controller
             echo 'Error: '.$e->getMessage();
         }
     }
+
 
     // handle teacher action type
     public function handleTeacherActionType(Request $request, $action_type, $id=''){

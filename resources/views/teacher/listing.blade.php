@@ -1,5 +1,13 @@
 @extends('layouts.app')
 
+<style>
+.selector span:after {
+    content: ",";
+}
+.selector span:last-child:after {
+    content: "";
+}
+</style>
 @section('title')
 Teachers
 @endsection 
@@ -25,9 +33,9 @@ Teachers
                         <th class="px-4 py-3">Name</th>
                         <th class="px-4 py-3">Gender</th>
                         <th class="px-4 py-3">Phone</th>
-                        <th class="px-4 py-3">Date of Birth</th>
-                        <th class="px-4 py-3">Current Address</th>
-                        <th class="px-4 py-3">Permanent Address</th>
+                        <th class="px-4 py-3">Subject</th>
+                        {{-- <th class="px-4 py-3">Current Address</th>
+                        <th class="px-4 py-3">Permanent Address</th> --}}
                         <th class="px-4 py-3">Profile Image</th>
                         <th class="px-4 py-3">Status</th>
                         <th class="px-4 py-3 text-right">Actions</th>
@@ -43,9 +51,15 @@ Teachers
                             <td class="px-4 py-3 text-sm font-semibold text-gray-600 tracking-tight">{{$value->name}}</td>
                             <td class="px-4 py-3 text-sm font-semibold text-gray-600 tracking-tight">{{$value->gender}}</td>
                             <td class="px-4 py-3 text-sm font-semibold text-gray-600 tracking-tight">{{$value->phone}}</td>
-                            <td class="px-4 py-3 text-sm font-semibold text-gray-600 tracking-tight">{{$value->dob}}</td>
-                            <td class="px-4 py-3 text-sm font-semibold text-gray-600 tracking-tight">{{$value->current_address}}</td>
-                            <td class="px-4 py-3 text-sm font-semibold text-gray-600 tracking-tight">{{$value->permanent_address}}</td>
+                            <td class="px-4 py-3 text-sm font-semibold text-gray-600 tracking-tight selector">
+                                @if($value->subjects->count() > 0)
+                                    @foreach($value->subjects as $subject)
+                                        <span title="{{$subject->subject_name}}">{{$subject->subject_code}}</span>
+                                    @endforeach
+                                @endif
+                            </td>
+                            {{-- <td class="px-4 py-3 text-sm font-semibold text-gray-600 tracking-tight">{{$value->current_address}}</td> --}}
+                            {{-- <td class="px-4 py-3 text-sm font-semibold text-gray-600 tracking-tight">{{$value->permanent_address}}</td> --}}
                             <td class="px-4 py-3 text-sm font-semibold text-gray-600 tracking-tight"><img src="{{!empty($value->profile_image) ? asset('assets/teacher_profile/'.$value->profile_image):asset('assets/user/profile/no_image.jpg')}}" width="50" height="50"></td>
                             <td class="px-4 py-3 text-sm font-semibold text-gray-600 tracking-tight">{{$value->status}}</td>
                             <td class="flex items-center justify-end px-3 py-4">

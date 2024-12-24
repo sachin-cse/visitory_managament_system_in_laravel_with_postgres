@@ -5,7 +5,7 @@
 
         <div class="flex items-center justify-between mb-6">
             <div>
-                <h2 class="text-gray-700 uppercase font-bold">Add New Teacher</h2>
+                <h2 class="text-gray-700 uppercase font-bold">{{($data->id??'')?'Update Teacher':'Add New Teacher'}}</h2>
             </div>
             <div class="flex flex-wrap items-center">
                 <a href="javascript:void(0);" class="bg-gray-700 text-white text-sm uppercase py-2 px-4 flex items-center rounded">

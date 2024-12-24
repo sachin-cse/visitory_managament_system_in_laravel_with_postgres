@@ -44,7 +44,7 @@
     <div class="container">
         <h1>404</h1>
         <p>Sorry, the page you are looking for could not be found.</p>
-        <a href="{{ url('/') }}">Go Home</a>
+        <a href="{{ route('admin.dashboard') }}">Go Home</a>
     </div>
 </body>
 </html>

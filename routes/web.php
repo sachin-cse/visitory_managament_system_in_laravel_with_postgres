@@ -42,13 +42,13 @@ Route::group(['prefix'=>'admin','as'=>'admin.'], function(){
     Route::post('/change-password', [CustomAuthController::class, 'ChangePassword'])->name('change-password');
 });
 
-
 require __DIR__.'/teacher.php';
 require __DIR__.'/auth.php';
 require __DIR__.'/subject.php';
+require __DIR__.'/class.php';
 
 Route::fallback(function(){
-    return \Response::view('errors.404');
+    return view('errors.404');
 });
 
 

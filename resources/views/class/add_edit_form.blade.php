@@ -5,7 +5,7 @@
 
         <div class="flex items-center justify-between mb-6">
             <div>
-                <h2 class="text-gray-700 uppercase font-bold">{{($data->subject_id??[])?'Update Subjet':'Add New Subject'}}</h2>
+                <h2 class="text-gray-700 uppercase font-bold">Add New Class</h2>
             </div>
             <div class="flex flex-wrap items-center">
                 <a href="javascript:void(0);" class="bg-gray-700 text-white text-sm uppercase py-2 px-4 flex items-center rounded">
@@ -17,33 +17,43 @@
         <!-- Log on to codeastro.com for more projects -->
         {{-- @dd($data->id); --}}
         <div class="table w-full mt-8 bg-white rounded">
-            <form action="{{route('admin.handle_subject_request','save')}}" method="POST" class="w-full max-w-xl px-6 py-12" enctype="multipart/form-data" id="teacher_save_data">
+            <form action="{{route('admin.handle_class_request','save')}}" method="POST" class="w-full max-w-xl px-6 py-12" enctype="multipart/form-data" id="myForm">
                 @csrf
                 <input type="hidden" value="save_data" name="mode">
                 {{-- <input type="hidden" value="{{\Auth::user()->id}}" name="user_id"> --}}
-                <input type="hidden" value="{{$data->subject_id??0}}" name="id">
+                <input type="hidden" value="{{$data->class_id??0}}" name="class_id">
                 @csrf
                 
                 <div class="md:flex md:items-center mb-6">
                     <div class="md:w-1/3">
                         <label class="block text-gray-500 font-bold md:text-right mb-1 md:mb-0 pr-4">
-                            Subject Name
+                            Class Name
                         </label>
                     </div>
                     <div class="md:w-2/3">
-                        <input name="subject_name" class="bg-gray-200 appearance-none border-2 border-gray-200 rounded w-full py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-blue-500" type="text" value="{{ old('subject_name', $data->subject_name??'') }}">
+                        <input name="class_name validate[required]" class="bg-gray-200 appearance-none border-2 border-gray-200 rounded w-full py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-blue-500" type="text" value="{{ old('class_name', $data->class_name??'') }}">
                     </div>
                 </div>
 
                 <div class="md:flex md:items-center mb-6">
+                    
                     <div class="md:w-1/3">
                         <label class="block text-gray-500 font-bold md:text-right mb-1 md:mb-0 pr-4">
-                            Subject Code
+                            Select Subject
                         </label>
                     </div>
                     <div class="md:w-2/3">
-                        <input name="subject_code" class="bg-gray-200 appearance-none border-2 border-gray-200 rounded w-full py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-blue-500" type="text" value="{{ old('subject_code', $data->subject_code??'') }}">
+                        <div class="flex flex-row items-center">
+                            <select name="subject_id[]" class="block text-gray-500 font-bold select-2-multiple" multiple>
+                                @if($subject_data->count() > 0)
+                                    @foreach($subject_data as $value)
+                                        <option value="{{$value->subject_id}}">{{$value->subject_name}}</option>
+                                    @endforeach
+                                @endif
+                            </select>
+                        </div>
                     </div>
+
                 </div>
 
                 
@@ -68,23 +78,22 @@
                     </div>
 
                 </div>
-                <!-- Log on to codeastro.com for more projects -->
+
                 <div class="md:flex md:items-center mb-6">
-                    
                     <div class="md:w-1/3">
                         <label class="block text-gray-500 font-bold md:text-right mb-1 md:mb-0 pr-4">
-                            Subject Description
+                            Status
                         </label>
                     </div>
-
                     <div class="md:w-2/3">
                         <div class="flex flex-row items-center">
-                            <label class="block text-gray-500 font-bold">
-                                <textarea name="subject_description" class="mr-2 leading-tight">{{$data->subject_description??''}}</textarea>
-                            </label>
+                            <select name="class_status" class="block text-gray-500 font-bold">
+                                <option value="" disabled selected>--select status--</option>
+                                    <option value="1">Active</option>
+                                    <option value="2">In Active</option>
+                            </select>
                         </div>
                     </div>
-                    
 
                 </div>
 
@@ -101,3 +110,14 @@
         <!-- Log on to codeastro.com for more projects -->
     </div>
 @endsection
+
+@push('scripts')
+    <script>
+        $(document).ready(function(){
+            $('.select-2-multiple').select2({
+                placeholder: "Please Choose Subject",
+                allowClear: true,
+            });
+        });
+    </script>
+@endpush

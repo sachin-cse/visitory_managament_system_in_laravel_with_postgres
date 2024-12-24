@@ -1,6 +1,6 @@
 $(document).ready(function(){
     // register user
-
+    $("#myForm").validationEngine();
     var base_url = window.location.origin;
     // alert(base_url);
 
@@ -601,7 +601,7 @@ $(document).ready(function(){
             confirmButtonColor: "#3085d6",
             cancelButtonColor: "#d33",
             confirmButtonText: "Yes"
-          }).then((result) => {
+        }).then((result) => {
             if (result.isConfirmed) {
                 var orderPosition = [];
                 var token = $('meta[name="csrf-token"]').attr('content');
@@ -630,7 +630,7 @@ $(document).ready(function(){
                     }
                 });
             }
-          });
+        });
     }
 
 

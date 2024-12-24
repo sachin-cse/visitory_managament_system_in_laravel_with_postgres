@@ -7,6 +7,7 @@ use App\Models\SubjectModel;
 use App\Models\TeacherModel;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Validator;
 
 class SubjectController extends Controller
 {
@@ -19,8 +20,7 @@ class SubjectController extends Controller
     public function index(Request $request, $view_type){
         try{
             if(view()->exists($view_type.'.listing')){
-                $subject_data = $this->SubjectModel->select('*',\DB::raw('CASE WHEN subject_status = 1 THEN "Active" ELSE "Inactive" END AS status'))->with('teachers')->get();
-                // dd($subject_data);
+                $subject_data = $this->SubjectModel->with('teachers')->select('*',\DB::raw('CASE WHEN subject_status = 1 THEN "Active" ELSE "Inactive" END AS status'))->get();
                 return view($view_type.'.listing', ['subject_data'=>$subject_data??'']);
             }
 
@@ -33,6 +33,7 @@ class SubjectController extends Controller
 
     // handle subject request
     public function handleSubjectRequest(Request $request,$action_type,$id=0){
+        
         $subject_data = $request->all();
         if($action_type == 'add' || $action_type == 'edit'){
             $teacher_data = $this->TeacherModel->get();
@@ -71,6 +72,26 @@ class SubjectController extends Controller
 
         try{
             if($subject_data['mode'] == 'save_data'){
+
+                $rules = [
+                    'subject_name'=>'required',
+                    'subject_code'=>'required||unique:subject,subject_code,'.$request->id.',subject_id,deleted_at,NULL',
+                    'teacher_id'=>'required',
+                    'subject_description'=>'required',
+                ];
+        
+                $validator = Validator::make($request->all(), $rules, [
+                    'subject_name.required'=>'Please enter your subject name',
+                    'subject_code.required'=>'Please enter your subject code',
+                    'subject_code.unique'=>'This subject code is already exists',
+                    'teacher_id.required'=>'Please select teacher',
+                    'subject_description.required'=>'Please enter your subject description',
+                ]);
+        
+                if($validator->fails()){
+                    throw new Exception($validator->errors()->first());
+                }
+
                 // dd($request->all());
                 if(($subject_data['id']??0) > 0){
                     $update_data = $this->SubjectModel->where('subject_id',$subject_data['id']);
